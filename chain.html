@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Chain Sign</title>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+      html { font-size:1em; }
+      p { margin:0; }
+
+      page, chain { display:block; }
+      page { width:20rem; background:#eee; padding:1rem; }
+
+      .chain {
+        width:7.5rem; margin:2.5rem auto;
+        display:flex; justify-content:space-between; align-items:center;
+      }
+      .chain > span {
+        width:0.5rem; height:0.5rem;
+        background:black; border-radius:0.5rem;
+      }
+      .chain::before,
+      .chain::after {
+        content:''; display:block;
+        width:3rem; height:0.1rem; background:black;
+      }
+    </style>
+  </head>
+  <body>
+  
+    <!-- BEGIN TEST -->
+    <template id="chain-sign">
+      <sign class="chain">
+        <span></span>
+      </sign>
+    </template>
+
+    <page>
+      <chain>
+        <p>Here is one chain of inferences...</p>
+      </chain>
+      <chain>
+        <p>...And here is another.</p>
+      </chain>
+    </page>
+    <!-- END TEST -->
+    
+    <script>
+      const Alphabet = class {
+        constructor() {
+          this.templates = {};
+        }
+        add(n, t) {
+          this.templates[n] = t;
+        }
+        init(n) {
+          const t = this.templates[n];
+          if (!t) return;
+          return document.importNode(t.content, true);
+        }
+      };
+
+      const signs = new Alphabet();
+      signs.add('chain', document.querySelector('#chain-sign'));
+
+      const chains = Array.from(document.querySelectorAll('chain'));
+      chains.forEach(el => {
+        if (el.nextElementSibling && el.nextElementSibling.nodeName === 'CHAIN') {
+          el.parentNode.insertBefore(signs.init('chain'), el.nextElementSibling);
+        }
+      });
+    </script>
+  </body>
+</html>
