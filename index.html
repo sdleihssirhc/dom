@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Concavity Tag</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="https://fonts.googleapis.com/css?family=UnifrakturCook:700&display=swap" rel="stylesheet" />
+    <style>
+      .concavity {
+        font-family:UnifrakturCook; display:inline-block; width:0.85em; text-align:center;
+        border-bottom-left-radius:10px; border-bottom-right-radius:10px; border-bottom:2px solid black;
+      }
+    </style>
+  </head>
+  <body>
+  
+    <!-- Beginning of Test -->
+    
+    <concavity>a</concavity>
+    
+    <!-- End of Test -->
+    
+    <script>
+      const DOM = (tag, block=false) => {
+        const instances = document.querySelectorAll(tag);
+        Array.from(instances).forEach(i => {
+          const parent = i.parentNode;
+          const after = i.nextElementSibling;
+          const el = document.createElement(block ? 'div' : 'span');
+          el.classList.add(i.nodeName.toLowerCase());
+          parent.removeChild(i);
+          el.innerHTML = i.innerHTML;
+          if (after) parent.insertBefore(el, after);
+          else parent.appendChild(el);
+        });
+      };
+
+      DOM('concavity');
+    </script>
+  </body>
+</html>
