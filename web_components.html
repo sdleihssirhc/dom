@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Turns out I'm re-inventing the wheel.</title>
+    <meta name="viewport" content="width=device-width" />
+  </head>
+  <body>
+  
+    <!-- CUSTOM ELEMENT W/ WEB COMPONENTS -->
+    <popup-info
+      img="http://placekitten.com/200/25"
+      text="This is just a test. I repeat. This is just a test."
+    />
+    <script>
+      class PopUpInfo {
+        constructor() {
+          super();
+          const parts = [ 'wrapper', 'icon', 'info' ].reduce((cur, acc) => {
+            const el = document.createElement('span');
+            el.classList.add(cur);
+            acc[cur] = el;
+            return acc;
+          }, {});
+          parts.icon.setAttribute('tabindex', 0);
+          parts.info.textContent = this.getAttribute('text');
+          const img = document.createElement('img');
+          img.src = this.hasAttribute('img') ?
+            this.getAttribute('img') :
+            'http://placekitten.com/100/100';
+          parts.icon.appendChild(img);
+          const style = document.createElement('style');
+          style.textContent =
+    	     `.wrapper { display:flex; flex-direction:column; width:200px; background:red; }
+            .icon { opacity:0.5; }
+            .info { padding:0.25em 0.5em; font-style:italic; background:#eee; }`;
+          parts.wrapper.appendChild(parts.icon);
+          parts.wrapper.appendChild(parts.info);
+          const shadow = this.attachShadow({ mode: 'open' });
+          shadow.appendChild(style);
+          shadow.appendChild(wrapper);
+        }
+      };
+      customElements.define('popup-info', PopUpInfo);
+    </script>
+    <!-- END CUSTOM ELEMENT W/ WEB COMPONENTS -->
+    
+  </body>
+</html>
